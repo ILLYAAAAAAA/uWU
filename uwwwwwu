@@ -1,1 +1,40 @@
-
+import random
+def create_recipe():
+    name = input("Название рецепта: ")
+    ingredients = input("Ингредиенты (через запятую): ").split(',')
+    instructions = input("Инструкции (по шагам): ").split('.')
+    return {"name": name, "ingredients": ingredients, "instructions": instructions}
+def search_recipe(recipes, ingredient):
+    found = [r for r in recipes if ingredient in r['ingredients']]
+    return found
+def suggest_recipe(recipes):
+    return random.choice(recipes) if recipes else None
+def print_recipe(recipe):
+    if recipe:
+        print(f"\nРецепт: {recipe['name']}")
+        print("Ингредиенты:", ", ".join(recipe['ingredients']))
+        print("Инструкции:")
+        for i, step in enumerate(recipe['instructions']):
+            print(f"{i+1}. {step.strip()}") 
+    else:
+        print("Рецепт не найден.")
+recipes = []
+while True:
+    action = input("\nДействие (создать/найти/предложить/выйти): ")
+    if action == "создать":
+        recipes.append(create_recipe())
+    elif action == "найти":
+        ingredient = input("Искать по ингредиенту: ")
+        found = search_recipe(recipes, ingredient)
+        if found:
+            for r in found:
+                print_recipe(r)
+        else:
+            print("Рецепты не найдены.")
+    elif action == "предложить":
+        suggestion = suggest_recipe(recipes)
+        print_recipe(suggestion)
+    elif action == "выйти":
+        break
+    else:
+        print("Неверное действие.")
